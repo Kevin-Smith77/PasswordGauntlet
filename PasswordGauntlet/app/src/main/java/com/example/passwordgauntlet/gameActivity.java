@@ -1,14 +1,14 @@
 package com.example.passwordgauntlet;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -29,9 +29,12 @@ public class gameActivity extends AppCompatActivity {
 
     int level = 1;
     List<Rules> activeRules;
-    TextView promptTextView;
-    TextView unsatisfiedTextView;
-    TextView satisfiedTextView;
+
+    ListView listView;
+    ArrayAdapter<String> adapter;
+    List<String> visibleRules;
+
+    int currentRuleIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class gameActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
 
-        // Receive level from story screen
         if (getIntent().hasExtra("level")) {
             level = getIntent().getIntExtra("level", 1);
         }
@@ -54,28 +56,35 @@ public class gameActivity extends AppCompatActivity {
         Submit = findViewById(R.id.Submit);
         storyButton = findViewById(R.id.storyButton);
         levelText = findViewById(R.id.levelText);
-        //promptTextView = findViewById(R.id.promptTextView);
+        listView = findViewById(R.id.listView);
 
-        // Display level
         levelText.setText("Level " + level);
 
         activeRules = new ArrayList<>();
+        activeRules.add(new minLength());
+        activeRules.add(new NumberRule());
+        activeRules.add(new ForbiddenWord("guard"));
+        activeRules.add(new CurrentMinute());
+        activeRules.add(new RomanNumeralRule());
+        activeRules.add(new SumDigits(15));
 
-        checkPassword(""); //initializes the screen with the first set of hints
+        visibleRules = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, visibleRules);
+        listView.setAdapter(adapter);
+
+        initRules();
 
         passwordEditText.addTextChangedListener(new TextWatcher(){
             @Override
-            public void afterTextChanged(Editable s) { //Editable is basically like a String, but can be changed
-                checkPassword(s.toString()); //sending the current text
+            public void afterTextChanged(Editable s) {
+                checkPassword(s.toString());
             }
 
-            //attaches a listener to check every time a key is pressed
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after){}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count){}
         });
-
 
         storyButton.setOnClickListener(v -> {
             Intent intent = new Intent(gameActivity.this, storyActivity.class);
@@ -84,61 +93,69 @@ public class gameActivity extends AppCompatActivity {
             finish();
         });
     }
-    void checkPassword(String input) {
-        List<Rules> unsatisfied = new ArrayList<>();
-        List<Rules> satisfied = new ArrayList<>();
 
+    void initRules(){
+        currentRuleIndex = 0;
+        visibleRules.clear();
 
-        for (Rules rule : activeRules) {  //loops through each rule in the list
-            if (!rule.checkRule(input)) {
-                unsatisfied.add(rule);
-            }else{
-                satisfied.add(rule);
-            }
+        if(!activeRules.isEmpty()){
+            visibleRules.add(formatRule(activeRules.get(0), false));
         }
 
-        //displaySortedRules(unsatisfied, satisfied);
+        adapter.notifyDataSetChanged();
+    }
 
-        if (unsatisfied.isEmpty() && !input.isEmpty()) { //self-explanatory, if all rules passed and input is not empty
-            storyButton.setBackgroundColor(Color.GREEN);
-            storyButton.setText("Password Approved!");
-        } else {
-            //this handles the "red" state if it's wrong or empty
+    void checkPassword(String input) {
+
+        List<String> newVisibleRules = new ArrayList<>();
+
+        boolean allPassed = true;
+
+        for (int i = 0; i <= currentRuleIndex && i < activeRules.size(); i++) {
+
+            Rules rule = activeRules.get(i);
+            boolean passed = rule.checkRule(input);
+
+            if (!passed) {
+                allPassed = false;
+            }
+
+            newVisibleRules.add(formatRule(rule, passed));
+        }
+
+        visibleRules.clear();
+        visibleRules.addAll(newVisibleRules);
+        adapter.notifyDataSetChanged();
+
+        if (input.isEmpty()) {
             storyButton.setBackgroundColor(Color.RED);
             storyButton.setText("Please try again!");
-            storyButton.setOnClickListener(null);
-        }
-    }
-    void updatePrompts(){
-        StringBuilder sb = new StringBuilder("Current Requirements:\n"); //combines multiple strings
-        //into one
-        for(Rules rule : activeRules){
-            //grabbing the unique hint from each specific rule class
-            sb.append("- ").append(rule.getHint()).append("\n");
-        }
-        promptTextView.setText(sb.toString()); //setting combined string to the TextView
-    }
-    void displaySortedRules(List<Rules> unsatisfied, List<Rules> satisfied){
-        StringBuilder unSb = new StringBuilder("NEEDS ATTENTION:\n");
-        for(Rules r : unsatisfied){
-            unSb.append("❌ ").append(r.getHint()).append("\n");
+            return;
         }
 
-        unsatisfiedTextView.setText(unSb.toString());
+        if (allPassed) {
 
-        StringBuilder satSb = new StringBuilder("COMPLETED:\n");
-        for(Rules r : satisfied){
-            satSb.append("✅ ").append(r.getHint()).append("\n");
+            if (currentRuleIndex < activeRules.size() - 1) {
+                currentRuleIndex++;
+
+                visibleRules.add(formatRule(activeRules.get(currentRuleIndex), false));
+                adapter.notifyDataSetChanged();
+
+                return;
+            }
+
+            storyButton.setBackgroundColor(Color.GREEN);
+            storyButton.setText("Password Approved!");
+
+        } else {
+            storyButton.setBackgroundColor(Color.RED);
+            storyButton.setText("Please try again!");
         }
-        satisfiedTextView.setText(satSb.toString());
     }
-    /*void goToLevelTwo() {
-        activeRules.clear();
-        activeRules.add(new LengthRule(10)); // Higher security
-        activeRules.add(new SumDigits(25));    // New logic puzzle
-        activeRules.add(new ForbiddenWord("Guard"));
-        activeRules.add(new CurrentMinute());
-        activeRules.add(new RomanNumeralRule());
-        updatePrompts();
-    }*/
+    String formatRule(Rules rule, boolean passed){
+        return (passed ? "✅ " : "❌ ") + rule.getHint();
+    }
+
+    void displayRules(){
+    }
 }
