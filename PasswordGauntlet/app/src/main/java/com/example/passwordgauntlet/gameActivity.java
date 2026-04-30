@@ -22,7 +22,6 @@ import java.util.List;
 public class gameActivity extends AppCompatActivity {
 
     EditText passwordEditText;
-    String inputText;
     Button Submit;
     Button storyButton;
     TextView levelText;
@@ -154,8 +153,5 @@ public class gameActivity extends AppCompatActivity {
     }
     String formatRule(Rules rule, boolean passed){
         return (passed ? "✅ " : "❌ ") + rule.getHint();
-    }
-
-    void displayRules(){
     }
 }
