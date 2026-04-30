@@ -22,7 +22,6 @@ import java.util.List;
 public class gameActivity extends AppCompatActivity {
 
     EditText passwordEditText;
-    Button Submit;
     Button storyButton;
     TextView levelText;
 
@@ -52,7 +51,6 @@ public class gameActivity extends AppCompatActivity {
         });
 
         passwordEditText = findViewById(R.id.input);
-        Submit = findViewById(R.id.Submit);
         storyButton = findViewById(R.id.storyButton);
         levelText = findViewById(R.id.levelText);
         listView = findViewById(R.id.listView);
