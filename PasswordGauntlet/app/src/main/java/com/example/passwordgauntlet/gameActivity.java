@@ -84,10 +84,23 @@ public class gameActivity extends AppCompatActivity {
         });
 
         storyButton.setOnClickListener(v -> {
-            Intent intent = new Intent(gameActivity.this, storyActivity.class);
-            intent.putExtra("level", level);
-            startActivity(intent);
-            finish();
+
+            String input = passwordEditText.getText().toString();
+            boolean allPassed = true;
+
+            for (Rules rule : activeRules) {
+                if (!rule.checkRule(input)) {
+                    allPassed = false;
+                    break;
+                }
+            }
+
+            if (allPassed) {
+                Intent intent = new Intent(gameActivity.this, storyActivity.class);
+                intent.putExtra("level", level);
+                startActivity(intent);
+                finish();
+            }
         });
     }
 
@@ -104,51 +117,66 @@ public class gameActivity extends AppCompatActivity {
 
     void checkPassword(String input) {
 
-        List<String> newVisibleRules = new ArrayList<>();
-
-        boolean allPassed = true;
-
-        for (int i = 0; i <= currentRuleIndex && i < activeRules.size(); i++) {
-
-            Rules rule = activeRules.get(i);
-            boolean passed = rule.checkRule(input);
-
-            if (!passed) {
-                allPassed = false;
-            }
-
-            newVisibleRules.add(formatRule(rule, passed));
-        }
-
-        visibleRules.clear();
-        visibleRules.addAll(newVisibleRules);
-        adapter.notifyDataSetChanged();
-
         if (input.isEmpty()) {
             storyButton.setBackgroundColor(Color.RED);
             storyButton.setText("Please try again!");
             return;
         }
 
-        if (allPassed) {
+        // Step 1: check currently unlocked rules
+        boolean allPassed = true;
 
-            if (currentRuleIndex < activeRules.size() - 1) {
+        for (int i = 0; i <= currentRuleIndex && i < activeRules.size(); i++) {
+            if (!activeRules.get(i).checkRule(input)) {
+                allPassed = false;
+                break;
+            }
+        }
+
+        // Step 2: cascade unlock rules if passed
+        if (allPassed) {
+            while (currentRuleIndex < activeRules.size() - 1) {
+
+                Rules nextRule = activeRules.get(currentRuleIndex + 1);
+
                 currentRuleIndex++;
 
-                visibleRules.add(formatRule(activeRules.get(currentRuleIndex), false));
-                adapter.notifyDataSetChanged();
-
-                return;
+                // stop if new rule is NOT satisfied
+                if (!nextRule.checkRule(input)) {
+                    break;
+                }
             }
+        }
 
+        // Step 3: rebuild visible rules
+        visibleRules.clear();
+
+        for (int i = 0; i <= currentRuleIndex; i++) {
+            Rules rule = activeRules.get(i);
+            boolean passed = rule.checkRule(input);
+            visibleRules.add(formatRule(rule, passed));
+        }
+
+        adapter.notifyDataSetChanged();
+
+        // Step 4: update button state
+        boolean allRulesPassed = true;
+        for (Rules rule : activeRules) {
+            if (!rule.checkRule(input)) {
+                allRulesPassed = false;
+                break;
+            }
+        }
+
+        if (allRulesPassed) {
             storyButton.setBackgroundColor(Color.GREEN);
             storyButton.setText("Password Approved!");
-
         } else {
             storyButton.setBackgroundColor(Color.RED);
             storyButton.setText("Please try again!");
         }
     }
+
     String formatRule(Rules rule, boolean passed){
         return (passed ? "✅ " : "❌ ") + rule.getHint();
     }
