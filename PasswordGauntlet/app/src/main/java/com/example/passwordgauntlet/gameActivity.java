@@ -56,14 +56,9 @@ public class gameActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
 
         levelText.setText("Level " + level);
-
+        //Call to get rules based on level
         activeRules = new ArrayList<>();
-        activeRules.add(new minLength());
-        activeRules.add(new NumberRule());
-        activeRules.add(new ForbiddenWord("guard"));
-        activeRules.add(new CurrentMinute());
-        activeRules.add(new RomanNumeralRule());
-        activeRules.add(new SumDigits(15));
+        getRules();
 
         visibleRules = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, visibleRules);
@@ -179,5 +174,32 @@ public class gameActivity extends AppCompatActivity {
 
     String formatRule(Rules rule, boolean passed){
         return (passed ? "✅ " : "❌ ") + rule.getHint();
+    }
+    void getRules(){
+        if(level == 1){
+            activeRules.add(new minLength());
+            activeRules.add(new NumberRule());
+            activeRules.add(new ForbiddenWord("guard"));
+            activeRules.add(new CurrentMinute());
+            activeRules.add(new RomanNumeralRule());
+            activeRules.add(new SumDigits(15));
+
+        }
+        else if(level == 2){
+            activeRules.add(new minLength());
+            activeRules.add(new NumberRule());
+            activeRules.add(new ForbiddenWord("guard"));
+            activeRules.add(new CurrentMinute());
+            activeRules.add(new RomanNumeralRule());
+            activeRules.add(new SumDigits(25));
+        }
+        else{
+            activeRules.add(new minLength());
+            activeRules.add(new NumberRule());
+            activeRules.add(new ForbiddenWord("guard"));
+            activeRules.add(new CurrentMinute());
+            activeRules.add(new RomanNumeralRule());
+            activeRules.add(new SumDigits(35));
+        }
     }
 }
