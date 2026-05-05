@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.enterButton);
 
         startButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, gameActivity.class);
+            Intent intent = new Intent(MainActivity.this, storyActivity.class);
+            intent.putExtra("level", 0);
             startActivity(intent);
         });
     }
