@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,23 +19,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/Submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="@+id/input"
-        app:layout_constraintStart_toStartOf="@+id/input"
-        app:layout_constraintTop_toBottomOf="@+id/input" />
-
-    <Button
         android:id="@+id/storyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="Story"
-        app:layout_constraintTop_toBottomOf="@id/Submit"
-        app:layout_constraintStart_toStartOf="@id/Submit"
-        app:layout_constraintEnd_toEndOf="@id/Submit" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input" />
 
     <ListView
         android:id="@+id/listView"
