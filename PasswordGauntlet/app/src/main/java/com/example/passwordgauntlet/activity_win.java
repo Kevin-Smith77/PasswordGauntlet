@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class activity_loss extends AppCompatActivity {
+public class activity_win extends AppCompatActivity {
 
     Button restartButton;
 
@@ -19,7 +19,7 @@ public class activity_loss extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_story_fail);
+        setContentView(R.layout.activity_story_win);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -29,7 +29,7 @@ public class activity_loss extends AppCompatActivity {
         restartButton = findViewById(R.id.restartButton);
 
         restartButton.setOnClickListener(v -> {
-            Intent intent = new Intent(activity_loss.this, MainActivity.class);
+            Intent intent = new Intent(activity_win.this, MainActivity.class);
             startActivity(intent);
         });
     }
