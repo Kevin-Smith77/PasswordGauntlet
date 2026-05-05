@@ -1,6 +1,5 @@
 package com.example.passwordproject;
 
-import java.text.BreakIterator;
 import java.util.List;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,30 +15,37 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView promptTextView;
+    private TextView levelHeader;
     private EditText passwordEditText;
     private Button actionButton;
     private List<PasswordRule> activeRules;
     private TextView unsatisfiedTextView;
     private TextView satisfiedTextView;
+    private int currentLevel = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        promptTextView = findViewById(R.id.promptTextView);
+        levelHeader = findViewById(R.id.levelHeader);
         passwordEditText = findViewById(R.id.passwordEditText);
         unsatisfiedTextView = findViewById(R.id.unsatisfiedTextView);
         satisfiedTextView = findViewById(R.id.satisfiedTextView);
         actionButton = findViewById(R.id.actionButton);
 
+        actionButton.setOnClickListener(v -> {
+            if(actionButton.getText().toString().contains("Proceed to next level")){
+                advanceLevel();
+            }
+        });
         //initializing the arraylist of rules
         activeRules = new ArrayList<>();
         activeRules.add(new LengthRule(5));
         activeRules.add(new NumberRule());
         activeRules.add(new SumDigits(4));
         activeRules.add(new ForbiddenWord("the"));
+        activeRules.add(new SpecialCharacter());
 
         checkPassword(""); //initializes the screen with the first set of hints
 
@@ -57,16 +63,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Transitions to Level 2 (The Prison Complex)
-    private void goToLevelTwo() {
+
+
+
+    private void advanceLevel(){
+        currentLevel++;
         activeRules.clear();
-        activeRules.add(new LengthRule(10)); // Higher security
-        activeRules.add(new SumDigits(25));    // New logic puzzle
-        activeRules.add(new ForbiddenWord("Guard"));
-        activeRules.add(new CurrentMinute());
-        activeRules.add(new RomanNumeralRule());
-        updatePrompts();
+        passwordEditText.setText("");
+
+        if(currentLevel == 2){
+            levelHeader.setText("LEVEL 2");
+            activeRules.add(new LengthRule(10));
+            activeRules.add(new MonthRule());
+            activeRules.add(new RomanNumeralRule());
+            activeRules.add(new LogicRule());
+        } else if(currentLevel == 3){
+            levelHeader.setText("LEVEL 3");
+            activeRules.add(new BatteryRule(this));
+            activeRules.add(new LeapYearRule());
+            activeRules.add(new EmojiRule());
+            activeRules.add(new UptimeRule());
+        } else {
+            levelHeader.setText("YOU ESCAPED!");
+            actionButton.setEnabled(false);
+            actionButton.setText("CONGRATULATIONS!");
+            actionButton.setBackgroundColor(Color.GREEN);
+            activeRules.clear();
+        }
+        checkPassword("");
     }
+
     private void checkPassword(String input) {
         List<PasswordRule> unsatisfied = new ArrayList<>();
         List<PasswordRule> satisfied = new ArrayList<>();
@@ -82,14 +108,13 @@ public class MainActivity extends AppCompatActivity {
 
         displaySortedRules(unsatisfied, satisfied);
 
-        if (unsatisfied.isEmpty() && !input.isEmpty()) { //self-explanatory, if all rules passed and input is not empty
-            actionButton.setBackgroundColor(Color.GREEN);
-            actionButton.setText("Password Approved!");
-        } else {
+        if (unsatisfied.isEmpty() && !input.isEmpty() && currentLevel < 4) { //self-explanatory, if all rules passed and input is not empty
+            actionButton.setBackgroundColor(Color.BLUE);
+            actionButton.setText("Proceed to next level");
+        } else if (currentLevel < 4) {
             //this handles the "red" state if it's wrong or empty
             actionButton.setBackgroundColor(Color.RED);
-            actionButton.setText("Please try again!");
-            actionButton.setOnClickListener(null);
+            actionButton.setText("Level " + currentLevel + " in progress....");
         }
     }
 
@@ -106,16 +131,6 @@ public class MainActivity extends AppCompatActivity {
             satSb.append("✅ ").append(r.getHint()).append("\n");
         }
         satisfiedTextView.setText(satSb.toString());
-    }
-
-    private void updatePrompts(){
-        StringBuilder sb = new StringBuilder("Current Requirements:\n"); //combines multiple strings
-        //into one
-        for(PasswordRule rule : activeRules){
-            //grabbing the unique hint from each specific rule class
-            sb.append("- ").append(rule.getHint()).append("\n");
-        }
-        promptTextView.setText(sb.toString()); //setting combined string to the TextView
     }
 
     public interface PasswordRule{

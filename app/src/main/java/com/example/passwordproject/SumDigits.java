@@ -1,7 +1,7 @@
 package com.example.passwordproject;
 
 public class SumDigits implements MainActivity.PasswordRule {
-    private int targetSum;
+    private final int targetSum;
 
     public SumDigits(int targetSum){
         this.targetSum = targetSum;
