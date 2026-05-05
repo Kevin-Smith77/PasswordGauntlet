@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="#ACFAEF"
     tools:context=".MainActivity">
 
@@ -23,7 +22,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Level 2"
+        android:text="VICTORY!!!"
         android:textSize="45sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,34 +46,30 @@
         app:layout_constraintEnd_toEndOf="@+id/bufferTextView"
         app:layout_constraintStart_toStartOf="@+id/bufferTextView"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView"
-        app:srcCompat="@drawable/level_2" />
+        app:srcCompat="@drawable/victory" />
 
     <TextView
         android:id="@+id/infoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="You managed to crack the code and escape out of your cell. You sneal past the guards around
-every corner, until you run into another road block. A giant metal door. Won't budge via force.
-Thankfully, it's protected by another password. But this one is more complicated than the last.
-Can you solve it?"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/bufferTextView2"
+        android:textSize="30sp"
+        android:text="As the door finally opens, you speed off into the blue and beautiful waters
+in front of you. The sun shines on you once again. As the fresh air encapsules you, it's really true.
+You escaped. You're free."
         app:layout_constraintEnd_toEndOf="@+id/artImageView"
         app:layout_constraintStart_toStartOf="@+id/artImageView"
         app:layout_constraintTop_toBottomOf="@+id/artImageView" />
 
     <Button
-        android:id="@+id/startButton"
-        android:layout_width="102dp"
-        android:layout_height="61dp"
+        android:id="@+id/restartButton"
+        android:layout_width="125dp"
+        android:layout_height="64dp"
         android:layout_marginStart="32dp"
-        android:text="Start"
+        android:text="Restart?"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bufferTextView2"
         app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/bufferTextView2"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView2" />
-    tools:context=".activity_story2">
-
 </androidx.constraintlayout.widget.ConstraintLayout>

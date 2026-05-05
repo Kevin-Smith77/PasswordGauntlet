@@ -31,7 +31,7 @@ public class storyActivity extends AppCompatActivity {
             setContentView(R.layout.activity_story4);
         }
 
-        backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.startButton);
 
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(storyActivity.this, gameActivity.class);

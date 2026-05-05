@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="#ACFAEF"
     tools:context=".MainActivity">
 
@@ -23,7 +22,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Level 2"
+        android:text="Level 1"
         android:textSize="45sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,23 +42,22 @@
         android:id="@+id/artImageView"
         android:layout_width="291dp"
         android:layout_height="212dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/bufferTextView"
         app:layout_constraintStart_toStartOf="@+id/bufferTextView"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView"
-        app:srcCompat="@drawable/level_2" />
+        app:srcCompat="@drawable/level_1" />
 
     <TextView
         android:id="@+id/infoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="You managed to crack the code and escape out of your cell. You sneal past the guards around
-every corner, until you run into another road block. A giant metal door. Won't budge via force.
-Thankfully, it's protected by another password. But this one is more complicated than the last.
-Can you solve it?"
+        android:layout_marginTop="8dp"
+        android:text="Locked in the most secure prison on Earth, it seems like you're forced
+to spend the last of your days here. But you're lucky: You manage to get hands on a tablet from one of the guards.
+On it, you find an app that gives you the key you need to escape: the password for your cell door.
+But, you have to solve a few puzzles in order to find the right combination. Time to break out."
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/bufferTextView2"
         app:layout_constraintEnd_toEndOf="@+id/artImageView"
         app:layout_constraintStart_toStartOf="@+id/artImageView"
         app:layout_constraintTop_toBottomOf="@+id/artImageView" />
@@ -75,6 +73,4 @@ Can you solve it?"
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView2" />
-    tools:context=".activity_story2">
-
 </androidx.constraintlayout.widget.ConstraintLayout>
