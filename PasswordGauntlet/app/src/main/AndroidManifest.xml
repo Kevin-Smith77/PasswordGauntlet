@@ -6,6 +6,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.PasswordGauntlet">
+        <activity
+            android:name=".LoseActivity" />
 
         <activity
             android:name=".MainActivity"

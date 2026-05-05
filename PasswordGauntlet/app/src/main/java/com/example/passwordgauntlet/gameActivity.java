@@ -3,6 +3,7 @@ package com.example.passwordgauntlet;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ public class gameActivity extends AppCompatActivity {
     EditText passwordEditText;
     Button storyButton;
     TextView levelText;
+    TextView timerText;
 
     int level = 1;
     List<Rules> activeRules;
@@ -33,6 +35,10 @@ public class gameActivity extends AppCompatActivity {
     List<String> visibleRules;
 
     int currentRuleIndex = 0;
+
+    // TIMER
+    CountDownTimer timer;
+    long timeLeft = 30000; // 30 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class gameActivity extends AppCompatActivity {
         storyButton = findViewById(R.id.storyButton);
         levelText = findViewById(R.id.levelText);
         listView = findViewById(R.id.listView);
+        timerText = findViewById(R.id.timerText);
 
         levelText.setText("Level " + level);
 
@@ -70,17 +77,15 @@ public class gameActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         initRules();
+        startTimer(); // START TIMER
 
         passwordEditText.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
                 checkPassword(s.toString());
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count){}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count){}
         });
 
         storyButton.setOnClickListener(v -> {
@@ -100,8 +105,45 @@ public class gameActivity extends AppCompatActivity {
                 intent.putExtra("level", level);
                 startActivity(intent);
                 finish();
+            } else {
+                storyButton.setText("Complete all rules first!");
+                storyButton.setBackgroundColor(Color.RED);
             }
         });
+    }
+
+    void startTimer() {
+        timer = new CountDownTimer(timeLeft, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
+                timerText.setText("Time: " + (millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("Time: 0");
+                loseGame();
+            }
+        }.start();
+    }
+
+    void loseGame() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        Intent intent = new Intent(gameActivity.this, LoseActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     void initRules(){
@@ -123,7 +165,6 @@ public class gameActivity extends AppCompatActivity {
             return;
         }
 
-        // Step 1: check currently unlocked rules
         boolean allPassed = true;
 
         for (int i = 0; i <= currentRuleIndex && i < activeRules.size(); i++) {
@@ -133,7 +174,6 @@ public class gameActivity extends AppCompatActivity {
             }
         }
 
-        // Step 2: cascade unlock rules if passed
         if (allPassed) {
             while (currentRuleIndex < activeRules.size() - 1) {
 
@@ -141,14 +181,12 @@ public class gameActivity extends AppCompatActivity {
 
                 currentRuleIndex++;
 
-                // stop if new rule is NOT satisfied
                 if (!nextRule.checkRule(input)) {
                     break;
                 }
             }
         }
 
-        // Step 3: rebuild visible rules
         visibleRules.clear();
 
         for (int i = 0; i <= currentRuleIndex; i++) {
@@ -159,7 +197,6 @@ public class gameActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-        // Step 4: update button state
         boolean allRulesPassed = true;
         for (Rules rule : activeRules) {
             if (!rule.checkRule(input)) {
