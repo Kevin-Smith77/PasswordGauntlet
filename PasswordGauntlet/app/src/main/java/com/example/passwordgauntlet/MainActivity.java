@@ -17,10 +17,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        startButton = findViewById(R.id.startButton);
+        startButton = findViewById(R.id.enterButton);
 
         startButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, gameActivity.class);
+            Intent intent = new Intent(MainActivity.this, storyActivity.class);
+            intent.putExtra("level", 0);
             startActivity(intent);
         });
     }

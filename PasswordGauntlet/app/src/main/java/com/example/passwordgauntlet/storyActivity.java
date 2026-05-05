@@ -16,11 +16,20 @@ public class storyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_story);
 
         level = getIntent().getIntExtra("level", 1);
+        if (level == 0) {
+            setContentView(R.layout.activity_story1);
+        }
+        else if (level == 1) {
+            setContentView(R.layout.activity_story2);
+        }
+        else if (level == 2) {
+            setContentView(R.layout.activity_story3);
+        }
 
-        backButton = findViewById(R.id.backButton);
+
+        backButton = findViewById(R.id.startButton);
 
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(storyActivity.this, gameActivity.class);
