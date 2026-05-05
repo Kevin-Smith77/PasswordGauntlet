@@ -96,8 +96,14 @@ public class gameActivity extends AppCompatActivity {
             }
 
             if (allPassed) {
-                Intent intent = new Intent(gameActivity.this, storyActivity.class);
-                intent.putExtra("level", level);
+                Intent intent;
+                if (level < 3) {
+                    intent = new Intent(gameActivity.this, storyActivity.class);
+                    intent.putExtra("level", level);
+                }
+                else {
+                    intent = new Intent(gameActivity.this, activity_win.class);
+                }
                 startActivity(intent);
                 finish();
             } else {
@@ -128,7 +134,7 @@ public class gameActivity extends AppCompatActivity {
             timer.cancel();
         }
 
-        Intent intent = new Intent(gameActivity.this, LoseActivity.class);
+        Intent intent = new Intent(gameActivity.this, activity_loss.class);
         startActivity(intent);
         finish();
     }
