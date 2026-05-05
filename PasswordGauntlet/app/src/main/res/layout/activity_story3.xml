@@ -72,4 +72,8 @@ or never. Escape, or rot."
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView2" />
+
+    tools:context=".activity_story3">
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
