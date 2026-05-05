@@ -19,7 +19,7 @@ public class storyActivity extends AppCompatActivity {
 
         level = getIntent().getIntExtra("level", 1);
         if (level == 1) {
-            setContentView(R.layout.activity_story);
+            setContentView(R.layout.activity_story1);
         }
         else if (level == 2) {
             setContentView(R.layout.activity_story2);
@@ -28,7 +28,7 @@ public class storyActivity extends AppCompatActivity {
             setContentView(R.layout.activity_story3);
         }
         else if (level == 4) {
-            setContentView(R.layout.activity_story4);
+            setContentView(R.layout.activity_story_win);
         }
 
         backButton = findViewById(R.id.startButton);
