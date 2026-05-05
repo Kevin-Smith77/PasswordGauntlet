@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#ACFAEF"
     tools:context=".MainActivity">
 
@@ -74,4 +75,6 @@ Can you solve it?"
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bufferTextView2" />
+    tools:context=".activity_story2">
+
 </androidx.constraintlayout.widget.ConstraintLayout>
