@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#ACFAEF"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/bufferTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="----------------------------------"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/infoTextView"
+        app:layout_constraintTop_toBottomOf="@+id/infoTextView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Level 2"
+        android:textSize="45sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bufferTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="----------------------------------"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+
+    <ImageView
+        android:id="@+id/artImageView"
+        android:layout_width="291dp"
+        android:layout_height="212dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/bufferTextView"
+        app:layout_constraintStart_toStartOf="@+id/bufferTextView"
+        app:layout_constraintTop_toBottomOf="@+id/bufferTextView"
+        app:srcCompat="@drawable/level_2" />
+
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="You managed to crack the code and escape out of your cell. You sneal past the guards around
+every corner, until you run into another road block. A giant metal door. Won't budge via force.
+Thankfully, it's protected by another password. But this one is more complicated than the last.
+Can you solve it?"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/bufferTextView2"
+        app:layout_constraintEnd_toEndOf="@+id/artImageView"
+        app:layout_constraintStart_toStartOf="@+id/artImageView"
+        app:layout_constraintTop_toBottomOf="@+id/artImageView" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="102dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="32dp"
+        android:text="Start"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bufferTextView2" />
+    tools:context=".activity_story2">
+
+</androidx.constraintlayout.widget.ConstraintLayout>
