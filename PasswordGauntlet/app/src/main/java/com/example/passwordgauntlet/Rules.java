@@ -22,10 +22,10 @@ class minLength extends Rules {
     public String getHint(){
         return "Password must be at least " + length + " characters long";
     }
-    minLength() {
-        Random rand = new Random();
-        length = rand.nextInt(4) + 5;
+    minLength(int length) {
+        this.length = length;
     }
+
     Boolean checkRule(String input) {
         return input.length() >= length;
     }
@@ -222,8 +222,6 @@ class LeapYearRule extends Rules{
 // Rule requiring a specific name
 class LogicRule extends Rules {
 
-
-
     @Override
     public String getHint() {
         return "The password must include the name of" +
@@ -299,26 +297,6 @@ class NoSpaces extends Rules{
     @Override
     public Boolean checkRule(String text) {
         return !text.contains(" ");
-    }
-}
-class Alphabetical extends Rules{
-    @Override
-    public String getHint() {
-        return "Must contain 3 letters in alphabetical order.";
-    }
-
-    @Override
-    public Boolean checkRule(String text) {
-        for(int i = 0; i<text.length() - 2; i++){
-            char a = text.toLowerCase().charAt(i);
-            char b = text.toLowerCase().charAt(i+1);
-            char c = text.toLowerCase().charAt(i+2);
-            if(Character.isLetter(a) && b == a+1 && c==b+1){
-                return true;
-
-            }
-        }
-        return false;
     }
 }
 class PrimeNumberRule extends Rules{
